@@ -1,4 +1,4 @@
--- TIMMONS Main Cheat - Ryfield Style GUI (Universal Executor, PC+Mobile, All Features)
+-- Tmmns Main Cheat - Ryfield Style GUI (Universal Executor, PC+Mobile, All Features)
 -- Features: Music Ac6, Aim Bot, Bring All, Dupe Gun, Big Head, Touch Fling, Highlightlocal
 -- Movable by title bar (touch/mouse), circular open/close, adapts for PC & mobile
 
@@ -12,34 +12,34 @@ local RunService = game:GetService("RunService")
 local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
 local Camera = workspace.CurrentCamera
 
-pcall(function() game:GetService("CoreGui")["Timmons_On_Top"]:Destroy() end)
+pcall(function() game:GetService("CoreGui")["Tmmns_Ryfield"]:Destroy() end)
 
-local mainColor = color3.fromRGB(26,26,32)
-local accentColor = color3.fromRGB(0,170,255)
-local tabColor = color3.fromRGB(34,34,44)
-local buttonColor = color3.fromRGB(40,40,50)
-local buttonOnColor = color3.fromRGB(0,200,100)
-local textColor = color3.fromRGB(230,230,235)
-local dangerColor = color3.fromRGB(230,60,80)
+local mainColor = Color3.fromRGB(26,26,32)
+local accentColor = Color3.fromRGB(0,170,255)
+local tabColor = Color3.fromRGB(34,34,44)
+local buttonColor = Color3.fromRGB(40,40,50)
+local buttonOnColor = Color3.fromRGB(0,200,100)
+local textColor = Color3.fromRGB(230,230,235)
+local dangerColor = Color3.fromRGB(230,60,80)
 
 local frameW, frameH = isMobile and 350 or 520, isMobile and 440 or 540
 local openBtnSize = isMobile and 48 or 42
 local tabW, tabFont = isMobile and 88 or 112, isMobile and 16 or 18
 
 local gui = Instance.new("ScreenGui")
-gui.Name = "Timmons"
+gui.Name = "Tmmns_Ryfield"
 gui.IgnoreGuiInset = true
 gui.ResetOnSpawn = false
 gui.Parent = (syn and syn.protect_gui and syn.protect_gui(game:GetService("CoreGui"))) or game:GetService("CoreGui")
 
 local openButton = Instance.new("TextButton")
-openButton.Name = "Timmons_Open"
+openButton.Name = "Tmmns_Open"
 openButton.Size = UDim2.new(0, openBtnSize, 0, openBtnSize)
 openButton.Position = UDim2.new(0, 24, 0, 24)
-openButton.Backgroundcolor3 = accentColor
+openButton.BackgroundColor3 = accentColor
 openButton.Text = "☰"
 openButton.TextSize = openBtnSize - 12
-openButton.Textcolor3 = color3.fromRGB(255,255,255)
+openButton.TextColor3 = Color3.fromRGB(255,255,255)
 openButton.Font = Enum.Font.GothamBold
 openButton.Visible = false
 openButton.AutoButtonColor = true
@@ -50,7 +50,7 @@ openCorner.CornerRadius = UDim.new(1,0)
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.new(0, frameW, 0, frameH)
 frame.Position = UDim2.new(0.5, -frameW/2, 0.5, -frameH/2)
-frame.Backgroundcolor3 = mainColor
+frame.BackgroundColor3 = mainColor
 frame.BorderSizePixel = 0
 frame.AnchorPoint = Vector2.new(0,0)
 local frameCorner = Instance.new("UICorner", frame)
@@ -61,7 +61,7 @@ frameStroke.Thickness = 2
 
 local titleBar = Instance.new("Frame", frame)
 titleBar.Size = UDim2.new(1,0,0,isMobile and 38 or 44)
-titleBar.Backgroundcolor3 = accentColor
+titleBar.BackgroundColor3 = accentColor
 titleBar.BorderSizePixel = 0
 local titleCorner = Instance.new("UICorner", titleBar)
 titleCorner.CornerRadius = UDim.new(0,10)
@@ -69,8 +69,8 @@ local titleLabel = Instance.new("TextLabel", titleBar)
 titleLabel.Size = UDim2.new(1,0,1,0)
 titleLabel.Position = UDim2.new(0,0,0,0)
 titleLabel.BackgroundTransparency = 1
-titleLabel.Text = "169 Main Cheat"
-titleLabel.Textcolor3 = color3.fromRGB(255,255,255)
+titleLabel.Text = "Tmmns On Top"
+titleLabel.TextColor3 = Color3.fromRGB(255,255,255)
 titleLabel.TextSize = isMobile and 20 or 28
 titleLabel.Font = Enum.Font.GothamBlack
 titleLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -79,8 +79,8 @@ local closeButton = Instance.new("TextButton", titleBar)
 closeButton.Size = UDim2.new(0,isMobile and 38 or 36,0,isMobile and 38 or 36)
 closeButton.Position = UDim2.new(1,-(isMobile and 44 or 44),0,3)
 closeButton.Text = "✖"
-closeButton.Textcolor3 = color3.fromRGB(255,255,255)
-closeButton.Backgroundcolor3 = dangerColor
+closeButton.TextColor3 = Color3.fromRGB(255,255,255)
+closeButton.BackgroundColor3 = dangerColor
 closeButton.Font = Enum.Font.GothamBold
 closeButton.TextSize = isMobile and 20 or 22
 closeButton.AutoButtonColor = true
@@ -125,7 +125,7 @@ end)
 local tabBar = Instance.new("Frame", frame)
 tabBar.Size = UDim2.new(0, tabW, 1, -(isMobile and 38 or 44))
 tabBar.Position = UDim2.new(0, 0, 0, isMobile and 38 or 44)
-tabBar.Backgroundcolor3 = tabColor
+tabBar.BackgroundColor3 = tabColor
 tabBar.BorderSizePixel = 0
 local tabBarCorner = Instance.new("UICorner", tabBar)
 tabBarCorner.CornerRadius = UDim.new(0,10)
@@ -138,8 +138,8 @@ local function makeTabBtn(txt)
     btn.Text = txt
     btn.Size = UDim2.new(1, -14, 0, isMobile and 34 or 40)
     btn.Position = UDim2.new(0,7,0,0)
-    btn.Backgroundcolor3 = buttonColor
-    btn.Textcolor3 = textColor
+    btn.BackgroundColor3 = buttonColor
+    btn.TextColor3 = textColor
     btn.Font = Enum.Font.GothamBold
     btn.TextSize = tabFont
     btn.BorderSizePixel = 0
@@ -187,7 +187,7 @@ local musicTitle = Instance.new("TextLabel", musicPage)
 musicTitle.Text = "FE Music Ac6"
 musicTitle.Size = UDim2.new(1,0,0,32)
 musicTitle.BackgroundTransparency = 1
-musicTitle.Textcolor3 = accentColor
+musicTitle.TextColor3 = accentColor
 musicTitle.TextSize = isMobile and 15 or 22
 musicTitle.Font = Enum.Font.GothamBold
 local musicIdBox = Instance.new("TextBox", musicPage)
@@ -195,8 +195,8 @@ musicIdBox.Size = UDim2.new(0.8, 0, 0, isMobile and 28 or 36)
 musicIdBox.Position = UDim2.new(0.1,0,0,0)
 musicIdBox.PlaceholderText = "Music ID (Numbers Only)"
 musicIdBox.Text = ""
-musicIdBox.Textcolor3 = textColor
-musicIdBox.Backgroundcolor3 = buttonColor
+musicIdBox.TextColor3 = textColor
+musicIdBox.BackgroundColor3 = buttonColor
 musicIdBox.Font = Enum.Font.Gotham
 musicIdBox.TextSize = isMobile and 13 or 17
 musicIdBox.BorderSizePixel = 0
@@ -204,9 +204,9 @@ local musicIdCorner = Instance.new("UICorner", musicIdBox)
 musicIdCorner.CornerRadius = UDim.new(0,8)
 local playBtn = makeTabBtn("Play"); playBtn.Parent = musicPage; playBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
 local stopBtn = makeTabBtn("Stop"); stopBtn.Parent = musicPage; stopBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
-stopBtn.Backgroundcolor3 = dangerColor
+stopBtn.BackgroundColor3 = dangerColor
 local loopBtn = makeTabBtn("Loop: ON"); loopBtn.Parent = musicPage; loopBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
-loopBtn.Backgroundcolor3 = buttonOnColor
+loopBtn.BackgroundColor3 = buttonOnColor
 
 -- AIMBOT
 local aimPage = makePage(); aimPage.Parent = pages
@@ -214,14 +214,14 @@ local aimTitle = Instance.new("TextLabel", aimPage)
 aimTitle.Text = "Aim Bot"
 aimTitle.Size = UDim2.new(1,0,0,32)
 aimTitle.BackgroundTransparency = 1
-aimTitle.Textcolor3 = accentColor
+aimTitle.TextColor3 = accentColor
 aimTitle.TextSize = isMobile and 15 or 22
 aimTitle.Font = Enum.Font.GothamBold
 local aimDesc = Instance.new("TextLabel", aimPage)
 aimDesc.Text = "Hold Right Mouse Button to Aim at Closest Target"
 aimDesc.Size = UDim2.new(1,0,0,24)
 aimDesc.BackgroundTransparency = 1
-aimDesc.Textcolor3 = textColor
+aimDesc.TextColor3 = textColor
 aimDesc.TextSize = isMobile and 11 or 15
 aimDesc.Font = Enum.Font.Gotham
 local aimToggle = makeTabBtn("Aim Bot: OFF"); aimToggle.Parent = aimPage; aimToggle.Size = UDim2.new(0.4,0,0,isMobile and 28 or 36)
@@ -232,14 +232,14 @@ local bringTitle = Instance.new("TextLabel", bringPage)
 bringTitle.Text = "Bring All"
 bringTitle.Size = UDim2.new(1,0,0,32)
 bringTitle.BackgroundTransparency = 1
-bringTitle.Textcolor3 = accentColor
+bringTitle.TextColor3 = accentColor
 bringTitle.TextSize = isMobile and 15 or 22
 bringTitle.Font = Enum.Font.GothamBold
 local bringDesc = Instance.new("TextLabel", bringPage)
 bringDesc.Text = "LoopBring (universal) - Brings all players in front of you."
 bringDesc.Size = UDim2.new(1,0,0,36)
 bringDesc.BackgroundTransparency = 1
-bringDesc.Textcolor3 = textColor
+bringDesc.TextColor3 = textColor
 bringDesc.TextSize = isMobile and 11 or 15
 bringDesc.Font = Enum.Font.Gotham
 bringDesc.TextWrapped = true
@@ -251,14 +251,14 @@ local dupeTitle = Instance.new("TextLabel", dupePage)
 dupeTitle.Text = "Dupe Gun"
 dupeTitle.Size = UDim2.new(1,0,0,32)
 dupeTitle.BackgroundTransparency = 1
-dupeTitle.Textcolor3 = accentColor
+dupeTitle.TextColor3 = accentColor
 dupeTitle.TextSize = isMobile and 15 or 22
 dupeTitle.Font = Enum.Font.GothamBold
 local dupeDesc = Instance.new("TextLabel", dupePage)
 dupeDesc.Text = "Exploit: Attempt to dupe/buy a Silenced Pistol for free."
 dupeDesc.Size = UDim2.new(1,0,0,32)
 dupeDesc.BackgroundTransparency = 1
-dupeDesc.Textcolor3 = textColor
+dupeDesc.TextColor3 = textColor
 dupeDesc.TextSize = isMobile and 11 or 15
 dupeDesc.Font = Enum.Font.Gotham
 dupeDesc.TextWrapped = true
@@ -270,14 +270,14 @@ local bigHeadTitle = Instance.new("TextLabel", bigHeadPage)
 bigHeadTitle.Text = "Big Head"
 bigHeadTitle.Size = UDim2.new(1,0,0,32)
 bigHeadTitle.BackgroundTransparency = 1
-bigHeadTitle.Textcolor3 = accentColor
+bigHeadTitle.TextColor3 = accentColor
 bigHeadTitle.TextSize = isMobile and 15 or 22
 bigHeadTitle.Font = Enum.Font.GothamBold
 local bigHeadDesc = Instance.new("TextLabel", bigHeadPage)
 bigHeadDesc.Text = "Makes all other players' heads big, red, neon, and semi-transparent."
 bigHeadDesc.Size = UDim2.new(1,0,0,32)
 bigHeadDesc.BackgroundTransparency = 1
-bigHeadDesc.Textcolor3 = textColor
+bigHeadDesc.TextColor3 = textColor
 bigHeadDesc.TextSize = isMobile and 11 or 15
 bigHeadDesc.Font = Enum.Font.Gotham
 bigHeadDesc.TextWrapped = true
@@ -289,19 +289,19 @@ local touchFlingTitle = Instance.new("TextLabel", touchFlingPage)
 touchFlingTitle.Text = "Touch Fling"
 touchFlingTitle.Size = UDim2.new(1,0,0,32)
 touchFlingTitle.BackgroundTransparency = 1
-touchFlingTitle.Textcolor3 = accentColor
+touchFlingTitle.TextColor3 = accentColor
 touchFlingTitle.TextSize = isMobile and 15 or 22
 touchFlingTitle.Font = Enum.Font.GothamBold
 local touchFlingDesc = Instance.new("TextLabel", touchFlingPage)
 touchFlingDesc.Text = "Loads the Touch Fling script from rawscripts.net (Universal)."
 touchFlingDesc.Size = UDim2.new(1,0,0,32)
 touchFlingDesc.BackgroundTransparency = 1
-touchFlingDesc.Textcolor3 = textColor
+touchFlingDesc.TextColor3 = textColor
 touchFlingDesc.TextSize = isMobile and 11 or 15
 touchFlingDesc.Font = Enum.Font.Gotham
 touchFlingDesc.TextWrapped = true
 local touchFlingBtn = makeTabBtn("Run Touch Fling"); touchFlingBtn.Parent = touchFlingPage; touchFlingBtn.Size = UDim2.new(0.7,0,0,isMobile and 28 or 36)
-touchFlingBtn.Backgroundcolor3 = color3.fromRGB(255, 170, 0)
+touchFlingBtn.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
 
 -- HIGHLIGHTLOCAL
 local highlightPage = makePage(); highlightPage.Parent = pages
@@ -309,20 +309,20 @@ local highlightTitle = Instance.new("TextLabel", highlightPage)
 highlightTitle.Text = "Highlight Local"
 highlightTitle.Size = UDim2.new(1,0,0,40)
 highlightTitle.BackgroundTransparency = 1
-highlightTitle.Textcolor3 = accentColor
+highlightTitle.TextColor3 = accentColor
 highlightTitle.TextSize = isMobile and 15 or 22
 highlightTitle.Font = Enum.Font.GothamBold
 local highlightBtn = makeTabBtn("Highlight All Players"); highlightBtn.Parent = highlightPage
 highlightBtn.Size = UDim2.new(0.7,0,0,isMobile and 28 or 36)
-highlightBtn.Backgroundcolor3 = color3.fromRGB(175,25,255)
+highlightBtn.BackgroundColor3 = Color3.fromRGB(175,25,255)
 
 -- TAB LOGIC
 local allTabs = {musicTabBtn, aimTabBtn, bringTabBtn, dupeTabBtn, bigHeadTabBtn, touchFlingTabBtn, highlightTabBtn}
 local allPages = {musicPage, aimPage, bringPage, dupePage, bigHeadPage, touchFlingPage, highlightPage}
 local function showPage(idx)
     for i,tab in ipairs(allTabs) do
-        tab.Backgroundcolor3 = (i==idx) and accentColor or buttonColor
-        tab.Textcolor3 = (i==idx) and color3.fromRGB(255, 255, 255) or textColor
+        tab.BackgroundColor3 = (i==idx) and accentColor or buttonColor
+        tab.TextColor3 = (i==idx) and Color3.fromRGB(255,255,255) or textColor
         if allPages[i] then allPages[i].Visible = (i==idx) end
     end
 end
@@ -413,7 +413,7 @@ stopBtn.MouseButton1Click:Connect(stopAudio)
 loopBtn.MouseButton1Click:Connect(function()
     loopEnabled = not loopEnabled
     loopBtn.Text = "Loop: " .. (loopEnabled and "ON" or "OFF")
-    loopBtn.Backgroundcolor3 = loopEnabled and buttonOnColor or buttonColor
+    loopBtn.BackgroundColor3 = loopEnabled and buttonOnColor or buttonColor
 end)
 
 -- Aim Bot Logic
@@ -489,7 +489,7 @@ end)
 aimToggle.MouseButton1Click:Connect(function()
     AimEnabled = not AimEnabled
     aimToggle.Text = AimEnabled and "Aim Bot: ON" or "Aim Bot: OFF"
-    aimToggle.Backgroundcolor3 = AimEnabled and buttonOnColor or buttonColor
+    aimToggle.BackgroundColor3 = AimEnabled and buttonOnColor or buttonColor
 end)
 
 -- Bring All Logic (LoopBring)
@@ -514,7 +514,7 @@ end
 bringToggle.MouseButton1Click:Connect(function()
     BringAllEnabled = not BringAllEnabled
     bringToggle.Text = BringAllEnabled and "Bring All: ON" or "Bring All: OFF"
-    bringToggle.Backgroundcolor3 = BringAllEnabled and buttonOnColor or buttonColor
+    bringToggle.BackgroundColor3 = BringAllEnabled and buttonOnColor or buttonColor
     if BringAllEnabled then
         if not bringAllConn then
             bringAllConn = RunService.RenderStepped:Connect(function()
@@ -533,7 +533,7 @@ local DupeGunEnabled = false
 dupeToggle.MouseButton1Click:Connect(function()
     DupeGunEnabled = not DupeGunEnabled
     dupeToggle.Text = DupeGunEnabled and "Dupe Gun: ON" or "Dupe Gun: OFF"
-    dupeToggle.Backgroundcolor3 = DupeGunEnabled and buttonOnColor or buttonColor
+    dupeToggle.BackgroundColor3 = DupeGunEnabled and buttonOnColor or buttonColor
     if DupeGunEnabled then
         local success, err = pcall(function()
             game:GetService("ReplicatedStorage").GunShop.Events.Purchase:FireServer("Silenced Pistol", -0)
@@ -546,7 +546,7 @@ dupeToggle.MouseButton1Click:Connect(function()
         task.wait(0.4)
         DupeGunEnabled = false
         dupeToggle.Text = "Dupe Gun: OFF"
-        dupeToggle.Backgroundcolor3 = buttonColor
+        dupeToggle.BackgroundColor3 = buttonColor
     end
 end)
 
@@ -558,7 +558,7 @@ local bigHeadConn = nil
 bigHeadToggle.MouseButton1Click:Connect(function()
     BigHeadEnabled = not BigHeadEnabled
     bigHeadToggle.Text = BigHeadEnabled and "Big Head: ON" or "Big Head: OFF"
-    bigHeadToggle.Backgroundcolor3 = BigHeadEnabled and buttonOnColor or buttonColor
+    bigHeadToggle.BackgroundColor3 = BigHeadEnabled and buttonOnColor or buttonColor
     _G.Disabled = not BigHeadEnabled
     if BigHeadEnabled then
         if not bigHeadConn then
@@ -606,10 +606,10 @@ end)
 
 -- Highlightlocal
 highlightBtn.MouseButton1Click:Connect(function()
-    local FillColor = color3.fromRGB(175,25,255)
+    local FillColor = Color3.fromRGB(175,25,255)
     local DepthMode = "AlwaysOnTop"
     local FillTransparency = 0.5
-    local OutlineColor = color3.fromRGB(255,255,255)
+    local OutlineColor = Color3.fromRGB(255,255,255)
     local OutlineTransparency = 0
 
     local CoreGui = game:FindService("CoreGui")
