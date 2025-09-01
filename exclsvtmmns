@@ -667,3 +667,6 @@ local function showCredits()
     print("Suck Butch Dick!!!")
     print("===================================")
 end
+
+-- Call the function to display credits
+showCredits()
