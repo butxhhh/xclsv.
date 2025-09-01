@@ -656,17 +656,3 @@ highlightBtn.MouseButton1Click:Connect(function()
         end
     end)
 end)
-
--- Creator Credits
-local function showCredits()
-    print("===================================")
-    print("          Creator Credits           ")
-    print("===================================")
-    print("Created by: Butch Timmons")
-    print("Discord: exclsvonyofacee")
-    print("Suck Butch Dick!!!")
-    print("===================================")
-end
-
--- Call the function to display credits
-showCredits()
