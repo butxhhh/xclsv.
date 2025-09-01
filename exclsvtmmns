@@ -1,0 +1,658 @@
+-- TIMMONS Main Cheat - Ryfield Style GUI (Universal Executor, PC+Mobile, All Features)
+-- Features: Music Ac6, Aim Bot, Bring All, Dupe Gun, Big Head, Touch Fling, Highlightlocal
+-- Movable by title bar (touch/mouse), circular open/close, adapts for PC & mobile
+
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+local Camera = workspace.CurrentCamera
+
+pcall(function() game:GetService("CoreGui")["Timmons_On_Top"]:Destroy() end)
+
+local mainColor = color5.fromRGB(26,26,32)
+local accentColor = color5.fromRGB(0,170,255)
+local tabColor = color5.fromRGB(34,34,44)
+local buttonColor = color5.fromRGB(40,40,50)
+local buttonOnColor = color5.fromRGB(0,200,100)
+local textColor = color5.fromRGB(230,230,235)
+local dangerColor = color5.fromRGB(230,60,80)
+
+local frameW, frameH = isMobile and 350 or 520, isMobile and 440 or 540
+local openBtnSize = isMobile and 48 or 42
+local tabW, tabFont = isMobile and 88 or 112, isMobile and 16 or 18
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "Timmons"
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+gui.Parent = (syn and syn.protect_gui and syn.protect_gui(game:GetService("CoreGui"))) or game:GetService("CoreGui")
+
+local openButton = Instance.new("TextButton")
+openButton.Name = "Timmons_Open"
+openButton.Size = UDim2.new(0, openBtnSize, 0, openBtnSize)
+openButton.Position = UDim2.new(0, 24, 0, 24)
+openButton.Backgroundcolor5 = accentColor
+openButton.Text = "☰"
+openButton.TextSize = openBtnSize - 12
+openButton.Textcolor5 = color5.fromRGB(255,255,255)
+openButton.Font = Enum.Font.GothamBold
+openButton.Visible = false
+openButton.AutoButtonColor = true
+openButton.Parent = gui
+local openCorner = Instance.new("UICorner", openButton)
+openCorner.CornerRadius = UDim.new(1,0)
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(0, frameW, 0, frameH)
+frame.Position = UDim2.new(0.5, -frameW/2, 0.5, -frameH/2)
+frame.Backgroundcolor5 = mainColor
+frame.BorderSizePixel = 0
+frame.AnchorPoint = Vector2.new(0,0)
+local frameCorner = Instance.new("UICorner", frame)
+frameCorner.CornerRadius = UDim.new(0, 10)
+local frameStroke = Instance.new("UIStroke", frame)
+frameStroke.Color = accentColor
+frameStroke.Thickness = 2
+
+local titleBar = Instance.new("Frame", frame)
+titleBar.Size = UDim2.new(1,0,0,isMobile and 38 or 44)
+titleBar.Backgroundcolor5 = accentColor
+titleBar.BorderSizePixel = 0
+local titleCorner = Instance.new("UICorner", titleBar)
+titleCorner.CornerRadius = UDim.new(0,10)
+local titleLabel = Instance.new("TextLabel", titleBar)
+titleLabel.Size = UDim2.new(1,0,1,0)
+titleLabel.Position = UDim2.new(0,0,0,0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "169 Main Cheat"
+titleLabel.Textcolor5 = color5.fromRGB(255,255,255)
+titleLabel.TextSize = isMobile and 20 or 28
+titleLabel.Font = Enum.Font.GothamBlack
+titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+
+local closeButton = Instance.new("TextButton", titleBar)
+closeButton.Size = UDim2.new(0,isMobile and 38 or 36,0,isMobile and 38 or 36)
+closeButton.Position = UDim2.new(1,-(isMobile and 44 or 44),0,3)
+closeButton.Text = "✖"
+closeButton.Textcolor5 = color5.fromRGB(255,255,255)
+closeButton.Backgroundcolor5 = dangerColor
+closeButton.Font = Enum.Font.GothamBold
+closeButton.TextSize = isMobile and 20 or 22
+closeButton.AutoButtonColor = true
+local closeCorner = Instance.new("UICorner", closeButton)
+closeCorner.CornerRadius = UDim.new(1,0)
+closeButton.MouseButton1Click:Connect(function()
+    frame.Visible = false
+    openButton.Visible = true
+    if bringAllConn then bringAllConn:Disconnect(); bringAllConn = nil; end
+    if bigHeadConn then bigHeadConn:Disconnect(); bigHeadConn = nil; _G.Disabled = true end
+end)
+openButton.MouseButton1Click:Connect(function()
+    frame.Visible = true
+    openButton.Visible = false
+end)
+
+local dragging, dragInput, dragStart, startPos
+titleBar.InputBegan:Connect(function(input)
+    if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+        dragging = true
+        dragStart = input.Position
+        startPos = frame.Position
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+titleBar.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
+end)
+
+local tabBar = Instance.new("Frame", frame)
+tabBar.Size = UDim2.new(0, tabW, 1, -(isMobile and 38 or 44))
+tabBar.Position = UDim2.new(0, 0, 0, isMobile and 38 or 44)
+tabBar.BackgroundColor5 = tabColor
+tabBar.BorderSizePixel = 0
+local tabBarCorner = Instance.new("UICorner", tabBar)
+tabBarCorner.CornerRadius = UDim.new(0,10)
+local tabLayout = Instance.new("UIListLayout", tabBar)
+tabLayout.FillDirection = Enum.FillDirection.Vertical
+tabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+tabLayout.Padding = UDim.new(0, 7)
+local function makeTabBtn(txt)
+    local btn = Instance.new("TextButton")
+    btn.Text = txt
+    btn.Size = UDim2.new(1, -14, 0, isMobile and 34 or 40)
+    btn.Position = UDim2.new(0,7,0,0)
+    btn.BackgroundColor5 = buttonColor
+    btn.TextColor5 = textColor
+    btn.Font = Enum.Font.GothamBold
+    btn.TextSize = tabFont
+    btn.BorderSizePixel = 0
+    btn.AutoButtonColor = true
+    local corner = Instance.new("UICorner", btn)
+    corner.CornerRadius = UDim.new(0,8)
+    return btn
+end
+local musicTabBtn = makeTabBtn("Music Ac6"); musicTabBtn.Parent = tabBar
+local aimTabBtn = makeTabBtn("Aim Bot"); aimTabBtn.Parent = tabBar
+local bringTabBtn = makeTabBtn("Bring All"); bringTabBtn.Parent = tabBar
+local dupeTabBtn = makeTabBtn("Dupe Gun"); dupeTabBtn.Parent = tabBar
+local bigHeadTabBtn = makeTabBtn("Big Head"); bigHeadTabBtn.Parent = tabBar
+local touchFlingTabBtn = makeTabBtn("Touch Fling"); touchFlingTabBtn.Parent = tabBar
+local highlightTabBtn = makeTabBtn("Highlightlocal"); highlightTabBtn.Parent = tabBar
+
+local pagePad = isMobile and 8 or 16
+local pages = Instance.new("Frame", frame)
+pages.Size = UDim2.new(1,-(tabW+pagePad),1,-((isMobile and 38 or 44)+pagePad))
+pages.Position = UDim2.new(0, tabW+pagePad, 0, (isMobile and 38 or 44)+pagePad)
+pages.BackgroundTransparency = 1
+local function makePage()
+    local scroll = Instance.new("ScrollingFrame")
+    scroll.Size = UDim2.new(1,0,1,0)
+    scroll.Position = UDim2.new(0,0,0,0)
+    scroll.BackgroundTransparency = 1
+    scroll.BorderSizePixel = 0
+    scroll.ScrollBarThickness = isMobile and 12 or 8
+    scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    scroll.CanvasSize = UDim2.new(0,0,10,0)
+    scroll.ScrollingDirection = Enum.ScrollingDirection.Y
+    scroll.MidImage = ""
+    scroll.BottomImage = ""
+    scroll.TopImage = ""
+    scroll.ClipsDescendants = true
+    local layout = Instance.new("UIListLayout", scroll)
+    layout.Padding = UDim.new(0, isMobile and 6 or 8)
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    return scroll
+end
+
+-- MUSIC
+local musicPage = makePage(); musicPage.Parent = pages
+local musicTitle = Instance.new("TextLabel", musicPage)
+musicTitle.Text = "FE Music Ac6"
+musicTitle.Size = UDim2.new(1,0,0,32)
+musicTitle.BackgroundTransparency = 1
+musicTitle.TextColor5 = accentColor
+musicTitle.TextSize = isMobile and 15 or 22
+musicTitle.Font = Enum.Font.GothamBold
+local musicIdBox = Instance.new("TextBox", musicPage)
+musicIdBox.Size = UDim2.new(0.8, 0, 0, isMobile and 28 or 36)
+musicIdBox.Position = UDim2.new(0.1,0,0,0)
+musicIdBox.PlaceholderText = "Music ID (Numbers Only)"
+musicIdBox.Text = ""
+musicIdBox.TextColor5 = textColor
+musicIdBox.Backgroundcolor5 = buttonColor
+musicIdBox.Font = Enum.Font.Gotham
+musicIdBox.TextSize = isMobile and 13 or 17
+musicIdBox.BorderSizePixel = 0
+local musicIdCorner = Instance.new("UICorner", musicIdBox)
+musicIdCorner.CornerRadius = UDim.new(0,8)
+local playBtn = makeTabBtn("Play"); playBtn.Parent = musicPage; playBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
+local stopBtn = makeTabBtn("Stop"); stopBtn.Parent = musicPage; stopBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
+stopBtn.Backgroundcolor5 = dangerColor
+local loopBtn = makeTabBtn("Loop: ON"); loopBtn.Parent = musicPage; loopBtn.Size = UDim2.new(0.25,0,0,isMobile and 28 or 36)
+loopBtn.Backgroundcolor5 = buttonOnColor
+
+-- AIMBOT
+local aimPage = makePage(); aimPage.Parent = pages
+local aimTitle = Instance.new("TextLabel", aimPage)
+aimTitle.Text = "Aim Bot"
+aimTitle.Size = UDim2.new(1,0,0,32)
+aimTitle.BackgroundTransparency = 1
+aimTitle.Textcolor5 = accentColor
+aimTitle.TextSize = isMobile and 15 or 22
+aimTitle.Font = Enum.Font.GothamBold
+local aimDesc = Instance.new("TextLabel", aimPage)
+aimDesc.Text = "Hold Right Mouse Button to Aim at Closest Target"
+aimDesc.Size = UDim2.new(1,0,0,24)
+aimDesc.BackgroundTransparency = 1
+aimDesc.Textcolor5 = textColor
+aimDesc.TextSize = isMobile and 11 or 15
+aimDesc.Font = Enum.Font.Gotham
+local aimToggle = makeTabBtn("Aim Bot: OFF"); aimToggle.Parent = aimPage; aimToggle.Size = UDim2.new(0.4,0,0,isMobile and 28 or 36)
+
+-- BRING ALL
+local bringPage = makePage(); bringPage.Parent = pages
+local bringTitle = Instance.new("TextLabel", bringPage)
+bringTitle.Text = "Bring All"
+bringTitle.Size = UDim2.new(1,0,0,32)
+bringTitle.BackgroundTransparency = 1
+bringTitle.Textcolor5 = accentColor
+bringTitle.TextSize = isMobile and 15 or 22
+bringTitle.Font = Enum.Font.GothamBold
+local bringDesc = Instance.new("TextLabel", bringPage)
+bringDesc.Text = "LoopBring (universal) - Brings all players in front of you."
+bringDesc.Size = UDim2.new(1,0,0,36)
+bringDesc.BackgroundTransparency = 1
+bringDesc.Textcolor5 = textColor
+bringDesc.TextSize = isMobile and 11 or 15
+bringDesc.Font = Enum.Font.Gotham
+bringDesc.TextWrapped = true
+local bringToggle = makeTabBtn("Bring All: OFF"); bringToggle.Parent = bringPage; bringToggle.Size = UDim2.new(0.5,0,0,isMobile and 28 or 36)
+
+-- DUPE GUN
+local dupePage = makePage(); dupePage.Parent = pages
+local dupeTitle = Instance.new("TextLabel", dupePage)
+dupeTitle.Text = "Dupe Gun"
+dupeTitle.Size = UDim2.new(1,0,0,32)
+dupeTitle.BackgroundTransparency = 1
+dupeTitle.Textcolor5 = accentColor
+dupeTitle.TextSize = isMobile and 15 or 22
+dupeTitle.Font = Enum.Font.GothamBold
+local dupeDesc = Instance.new("TextLabel", dupePage)
+dupeDesc.Text = "Exploit: Attempt to dupe/buy a Silenced Pistol for free."
+dupeDesc.Size = UDim2.new(1,0,0,32)
+dupeDesc.BackgroundTransparency = 1
+dupeDesc.Textcolor5 = textColor
+dupeDesc.TextSize = isMobile and 11 or 15
+dupeDesc.Font = Enum.Font.Gotham
+dupeDesc.TextWrapped = true
+local dupeToggle = makeTabBtn("Dupe Gun: OFF"); dupeToggle.Parent = dupePage; dupeToggle.Size = UDim2.new(0.5,0,0,isMobile and 28 or 36)
+
+-- BIG HEAD
+local bigHeadPage = makePage(); bigHeadPage.Parent = pages
+local bigHeadTitle = Instance.new("TextLabel", bigHeadPage)
+bigHeadTitle.Text = "Big Head"
+bigHeadTitle.Size = UDim2.new(1,0,0,32)
+bigHeadTitle.BackgroundTransparency = 1
+bigHeadTitle.Textcolor5 = accentColor
+bigHeadTitle.TextSize = isMobile and 15 or 22
+bigHeadTitle.Font = Enum.Font.GothamBold
+local bigHeadDesc = Instance.new("TextLabel", bigHeadPage)
+bigHeadDesc.Text = "Makes all other players' heads big, red, neon, and semi-transparent."
+bigHeadDesc.Size = UDim2.new(1,0,0,32)
+bigHeadDesc.BackgroundTransparency = 1
+bigHeadDesc.Textcolor5 = textColor
+bigHeadDesc.TextSize = isMobile and 11 or 15
+bigHeadDesc.Font = Enum.Font.Gotham
+bigHeadDesc.TextWrapped = true
+local bigHeadToggle = makeTabBtn("Big Head: OFF"); bigHeadToggle.Parent = bigHeadPage; bigHeadToggle.Size = UDim2.new(0.5,0,0,isMobile and 28 or 36)
+
+-- TOUCH FLING
+local touchFlingPage = makePage(); touchFlingPage.Parent = pages
+local touchFlingTitle = Instance.new("TextLabel", touchFlingPage)
+touchFlingTitle.Text = "Touch Fling"
+touchFlingTitle.Size = UDim2.new(1,0,0,32)
+touchFlingTitle.BackgroundTransparency = 1
+touchFlingTitle.Textcolor5 = accentColor
+touchFlingTitle.TextSize = isMobile and 15 or 22
+touchFlingTitle.Font = Enum.Font.GothamBold
+local touchFlingDesc = Instance.new("TextLabel", touchFlingPage)
+touchFlingDesc.Text = "Loads the Touch Fling script from rawscripts.net (Universal)."
+touchFlingDesc.Size = UDim2.new(1,0,0,32)
+touchFlingDesc.BackgroundTransparency = 1
+touchFlingDesc.Textcolor5 = textColor
+touchFlingDesc.TextSize = isMobile and 11 or 15
+touchFlingDesc.Font = Enum.Font.Gotham
+touchFlingDesc.TextWrapped = true
+local touchFlingBtn = makeTabBtn("Run Touch Fling"); touchFlingBtn.Parent = touchFlingPage; touchFlingBtn.Size = UDim2.new(0.7,0,0,isMobile and 28 or 36)
+touchFlingBtn.Backgroundcolor5 = color5.fromRGB(255, 170, 0)
+
+-- HIGHLIGHTLOCAL
+local highlightPage = makePage(); highlightPage.Parent = pages
+local highlightTitle = Instance.new("TextLabel", highlightPage)
+highlightTitle.Text = "Highlight Local"
+highlightTitle.Size = UDim2.new(1,0,0,40)
+highlightTitle.BackgroundTransparency = 1
+highlightTitle.Textcolor5 = accentColor
+highlightTitle.TextSize = isMobile and 15 or 22
+highlightTitle.Font = Enum.Font.GothamBold
+local highlightBtn = makeTabBtn("Highlight All Players"); highlightBtn.Parent = highlightPage
+highlightBtn.Size = UDim2.new(0.7,0,0,isMobile and 28 or 36)
+highlightBtn.Backgroundcolor5 = color5.fromRGB(175,25,255)
+
+-- TAB LOGIC
+local allTabs = {musicTabBtn, aimTabBtn, bringTabBtn, dupeTabBtn, bigHeadTabBtn, touchFlingTabBtn, highlightTabBtn}
+local allPages = {musicPage, aimPage, bringPage, dupePage, bigHeadPage, touchFlingPage, highlightPage}
+local function showPage(idx)
+    for i,tab in ipairs(allTabs) do
+        tab.Backgroundcolor5 = (i==idx) and accentColor or buttonColor
+        tab.Textcolor5 = (i==idx) and color5.fromRGB(180, 0, 237) or textColor
+        if allPages[i] then allPages[i].Visible = (i==idx) end
+    end
+end
+for i,tab in ipairs(allTabs) do
+    tab.MouseButton1Click:Connect(function() showPage(i) end)
+end
+showPage(1)
+
+if isMobile then
+    gui.DisplayOrder = 9999
+    gui.IgnoreGuiInset = true
+end
+
+-- FEATURES (Functionality)
+
+-- Music Logic (Volume always 999999)
+local loopEnabled = true
+local remote
+local specialChars = "1234567890QWRYUIOPASDFGHJKLZXVBMN+×÷=/_<>,!@#$%^&*?`~\\|{}€£¥©qwertyuiopasdfghjklzxcvbnm"
+local randomName = nil
+local function playSound(soundId)
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Volume = 1
+    sound.PlayOnRemove = true
+    sound.Parent = workspace
+    sound:Destroy()
+end
+local function generateRandomName()
+    local length = math.random(8, 12)
+    local name = ""
+    for i = 1, length do
+        local index = math.random(1, #specialChars)
+        name = name .. specialChars:sub(index, index)
+    end
+    return name
+end
+local function findRemoteEvent(name, parent)
+    for _, child in ipairs(parent:GetDescendants()) do
+        if child:IsA("RemoteEvent") and child.Name == name then
+            return child
+        end
+    end
+    return nil
+end
+local function getRemoteEvent()
+    return findRemoteEvent("AC6_FE_Sounds", replicatedStorage) or findRemoteEvent("AC6_FE_Sounds", workspace)
+end
+local function playAudio(musicId)
+    if not randomName then
+        randomName = generateRandomName()
+    end
+    local assetId = "rbxassetid://" .. musicId
+    remote = getRemoteEvent()
+    if not remote then
+        playSound("rbxassetid://9066167010")
+        return
+    end
+    local args = {
+        [1] = "newSound",
+        [2] = randomName,
+        [3] = game:GetService("TestService"),
+        [4] = assetId,
+        [5] = 999999,
+        [6] = 1,
+        [7] = loopEnabled,
+        [8] = 0
+    }
+    remote:FireServer(unpack(args))
+    remote:FireServer("playSound", randomName)
+    playSound("rbxassetid://156785206")
+end
+local function stopAudio()
+    if randomName and remote then
+        remote:FireServer("stopSound", randomName)
+        playSound("rbxassetid://156785206")
+    end
+end
+playBtn.MouseButton1Click:Connect(function()
+    local musicId = musicIdBox.Text:gsub("%D", "")
+    if musicId ~= "" then
+        playAudio(musicId)
+    else
+        playSound("rbxassetid://9066167010")
+    end
+end)
+stopBtn.MouseButton1Click:Connect(stopAudio)
+loopBtn.MouseButton1Click:Connect(function()
+    loopEnabled = not loopEnabled
+    loopBtn.Text = "Loop: " .. (loopEnabled and "ON" or "OFF")
+    loopBtn.Backgroundcolor5 = loopEnabled and buttonOnColor or buttonColor
+end)
+
+-- Aim Bot Logic
+local AimEnabled = false
+local AimbotActive = false
+local SmoothAlpha = 0.1
+local AimbotMode = "Instant"
+local FOV = 4
+local function getTargetPart(character)
+    local head = character:FindFirstChild("Head")
+    if head then return head.Position end
+    local upperTorso = character:FindFirstChild("UpperTorso")
+    local neckAttachment = upperTorso and upperTorso:FindFirstChild("NeckAttachment")
+    if neckAttachment then return neckAttachment.WorldPosition end
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if humanoidRootPart then return humanoidRootPart.Position end
+    return nil
+end
+local function getClosestPlayer()
+    local closestTarget = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer and player.Character then
+            local humanoid = player.Character:FindFirstChild("Humanoid")
+            if humanoid and humanoid.Health > 0 then
+                local targetPos = getTargetPart(player.Character)
+                if targetPos then
+                    local localRoot = Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+                    if localRoot then
+                        local distance = (localRoot.Position - targetPos).Magnitude
+                        local _, onScreen = Camera:WorldToScreenPoint(targetPos)
+                        if onScreen then
+                            local toTarget = (targetPos - Camera.CFrame.Position).Unit
+                            local cameraForward = Camera.CFrame.LookVector
+                            local angle = math.acos(cameraForward:Dot(toTarget)) * (180 / math.pi)
+                            if angle <= FOV and distance < shortestDistance then
+                                shortestDistance = distance
+                                closestTarget = targetPos
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return closestTarget
+end
+local function aimAtTarget()
+    local target = getClosestPlayer()
+    if target then
+        if AimbotMode == "Instant" then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target)
+        elseif AimbotMode == "Smooth" then
+            Camera.CFrame = Camera.CFrame:Lerp(CFrame.new(Camera.CFrame.Position, target), SmoothAlpha)
+        end
+    end
+end
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 and AimEnabled then
+        AimbotActive = true
+    end
+end)
+UserInputService.InputEnded:Connect(function(input, gameProcessed)
+    if input.UserInputType == Enum.UserInputType.MouseButton2 then
+        AimbotActive = false
+    end
+end)
+RunService.RenderStepped:Connect(function()
+    if AimEnabled and AimbotActive then
+        aimAtTarget()
+    end
+end)
+aimToggle.MouseButton1Click:Connect(function()
+    AimEnabled = not AimEnabled
+    aimToggle.Text = AimEnabled and "Aim Bot: ON" or "Aim Bot: OFF"
+    aimToggle.Backgroundcolor5 = AimEnabled and buttonOnColor or buttonColor
+end)
+
+-- Bring All Logic (LoopBring)
+local BringAllEnabled = false
+local bringAllConn = nil
+local function getLookVector()
+    return player.Character and player.Character.PrimaryPart and player.Character.PrimaryPart.CFrame.LookVector or Vector3.new(0, 0, -1)
+end
+local function bringPlayers()
+    if not player.Character or not player.Character.PrimaryPart then return end
+    local pos = player.Character.PrimaryPart.Position + getLookVector() * 5
+    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player and otherPlayer.Character and otherPlayer.Character.PrimaryPart then
+            local otherCharacter = otherPlayer.Character
+            local humanoid = otherCharacter:FindFirstChildOfClass("Humanoid")
+            if humanoid and humanoid.Health > 0 then
+                otherCharacter:SetPrimaryPartCFrame(CFrame.new(pos))
+            end
+        end
+    end
+end
+bringToggle.MouseButton1Click:Connect(function()
+    BringAllEnabled = not BringAllEnabled
+    bringToggle.Text = BringAllEnabled and "Bring All: ON" or "Bring All: OFF"
+    bringToggle.Backgroundcolor5 = BringAllEnabled and buttonOnColor or buttonColor
+    if BringAllEnabled then
+        if not bringAllConn then
+            bringAllConn = RunService.RenderStepped:Connect(function()
+                bringPlayers()
+            end)
+        end
+    else
+        if bringAllConn then
+            bringAllConn:Disconnect(); bringAllConn = nil
+        end
+    end
+end)
+
+-- Dupe Gun Logic
+local DupeGunEnabled = false
+dupeToggle.MouseButton1Click:Connect(function()
+    DupeGunEnabled = not DupeGunEnabled
+    dupeToggle.Text = DupeGunEnabled and "Dupe Gun: ON" or "Dupe Gun: OFF"
+    dupeToggle.Backgroundcolor5 = DupeGunEnabled and buttonOnColor or buttonColor
+    if DupeGunEnabled then
+        local success, err = pcall(function()
+            game:GetService("ReplicatedStorage").GunShop.Events.Purchase:FireServer("Silenced Pistol", -0)
+        end)
+        if success then
+            playSound("rbxassetid://156785206")
+        else
+            playSound("rbxassetid://9066167010")
+        end
+        task.wait(0.4)
+        DupeGunEnabled = false
+        dupeToggle.Text = "Dupe Gun: OFF"
+        dupeToggle.Backgroundcolor5 = buttonColor
+    end
+end)
+
+-- Big Head Logic
+_G.HeadSize = 4
+_G.Disabled = true
+local BigHeadEnabled = false
+local bigHeadConn = nil
+bigHeadToggle.MouseButton1Click:Connect(function()
+    BigHeadEnabled = not BigHeadEnabled
+    bigHeadToggle.Text = BigHeadEnabled and "Big Head: ON" or "Big Head: OFF"
+    bigHeadToggle.Backgroundcolor5 = BigHeadEnabled and buttonOnColor or buttonColor
+    _G.Disabled = not BigHeadEnabled
+    if BigHeadEnabled then
+        if not bigHeadConn then
+            bigHeadConn = RunService.RenderStepped:Connect(function()
+                if not _G.Disabled then
+                    for i,v in next, game:GetService('Players'):GetPlayers() do
+                        if v.Name ~= game:GetService('Players').LocalPlayer.Name then
+                            pcall(function()
+                                if v.Character and v.Character:FindFirstChild("Head") then
+                                    v.Character.Head.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+                                    v.Character.Head.Transparency = 0.4
+                                    v.Character.Head.BrickColor = BrickColor.new("Red")
+                                    v.Character.Head.Material = "Neon"
+                                    v.Character.Head.CanCollide = false
+                                    v.Character.Head.Massless = true
+                                end
+                            end)
+                        end
+                    end
+                end
+            end)
+        end
+    else
+        if bigHeadConn then
+            bigHeadConn:Disconnect(); bigHeadConn = nil
+        end
+    end
+end)
+
+-- Touch Fling
+touchFlingBtn.MouseButton1Click:Connect(function()
+    local success, err = pcall(function()
+        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Touch-Fling-Script-19645"))()
+    end)
+    if success then
+        touchFlingBtn.Text = "Loaded!"
+        wait(1)
+        touchFlingBtn.Text = "Run Touch Fling"
+    else
+        touchFlingBtn.Text = "Failed!"
+        wait(1.5)
+        touchFlingBtn.Text = "Run Touch Fling"
+    end
+end)
+
+-- Highlightlocal
+highlightBtn.MouseButton1Click:Connect(function()
+    local FillColor = color5.fromRGB(175,25,255)
+    local DepthMode = "AlwaysOnTop"
+    local FillTransparency = 0.5
+    local OutlineColor = color5.fromRGB(255,255,255)
+    local OutlineTransparency = 0
+
+    local CoreGui = game:FindService("CoreGui")
+    local Players = game:FindService("Players")
+    local connections = {}
+
+    local Storage = CoreGui:FindFirstChild("Highlight_Storage") or Instance.new("Folder")
+    Storage.Parent = CoreGui
+    Storage.Name = "Highlight_Storage"
+
+    local function Highlight(plr)
+        if Storage:FindFirstChild(plr.Name) then return end
+        local Highlight = Instance.new("Highlight")
+        Highlight.Name = plr.Name
+        Highlight.FillColor = FillColor
+        Highlight.DepthMode = DepthMode
+        Highlight.FillTransparency = FillTransparency
+        Highlight.OutlineColor = OutlineColor
+        Highlight.OutlineTransparency = OutlineTransparency
+        Highlight.Parent = Storage
+        
+        local plrchar = plr.Character
+        if plrchar then
+            Highlight.Adornee = plrchar
+        end
+
+        connections[plr] = plr.CharacterAdded:Connect(function(char)
+            Highlight.Adornee = char
+        end)
+    end
+
+    Players.PlayerAdded:Connect(Highlight)
+    for i,v in next, Players:GetPlayers() do
+        Highlight(v)
+    end
+
+    Players.PlayerRemoving:Connect(function(plr)
+        local plrname = plr.Name
+        if Storage:FindFirstChild(plrname) then
+            Storage[plrname]:Destroy()
+        end
+        if connections[plr] then
+            connections[plr]:Disconnect()
+        end
+    end)
+end)
