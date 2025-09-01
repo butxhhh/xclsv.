@@ -591,7 +591,7 @@ end)
 -- Touch Fling
 touchFlingBtn.MouseButton1Click:Connect(function()
     local success, err = pcall(function()
-        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Touch-Fling-Script-19645"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/LiarRise/FLN-X/refs/heads/main/README.md"))()
     end)
     if success then
         touchFlingBtn.Text = "Loaded!"
